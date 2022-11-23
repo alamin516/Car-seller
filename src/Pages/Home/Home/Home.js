@@ -2,8 +2,8 @@ import React from 'react';
 
 const Home = () => {
     return (
-        <div>
-            <h2>Home Pages</h2>
+        <div className="max-w-[1280px] mx-auto">
+            
         </div>
     );
 };
