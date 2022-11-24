@@ -13,6 +13,7 @@ const Login = () => {
         .then(result => {
             const user = result.user;
             console.log(user);
+            fetch('')
             navigate('/')
         })
         .catch(error => {
@@ -73,6 +74,11 @@ const Login = () => {
                 <div className="form-control mt-6">
                     <button onClick={handleSignInWithGoogle} className="btn bordered-accent text-accent hover:bg-white bg-white">CONTINUE WITH GOOGLE</button>
                 </div>
+                <div className="form-control mt-6 text-center">
+                   <p>Admin email: admin@admin.com</p>
+                   <p>Admin Possword: 123456</p>
+                </div>
+
             </div>
         </div >
     );

@@ -25,7 +25,7 @@ const Navbar = () => {
                     { user?.photoURL ? <li>
                         <div className="avatar">
                             <div className="lg:w-10 w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img src="https://placeimg.com/192/192/people" alt='' />
+                                <img src={user?.photoURL} alt='' />
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@ const Navbar = () => {
                 </li>
                     
                     }
-                    <li><Link to='/login' onClick={handleLogOut}><button className='btn btn-secondary'>SignOut</button></Link></li>
+                    <li><Link to='/login' onClick={handleLogOut}><button className='btn btn-secondary'>Sign Out</button></Link></li>
                 </>
                 :
                 <>

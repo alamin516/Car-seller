@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const {createUser, updateUser} =useContext(AuthContext);
+    const {createUser, updateUser, signInWithGoogle} = useContext(AuthContext);
+    const navigate = useNavigate()
 
 
     const handleSignUp = data => {
@@ -19,10 +20,51 @@ const SignUp = () => {
 
             }
             updateUser(userInfo)
-            .then(()=>{})
+            .then(()=>{
+                navigate('/')
+                saveUserDb(data.name, data.email, data.role)
+
+            })
             .catch(error => console.log(error))
         })
         .catch(error => console.log(error))
+    }
+
+    const saveUserDb = (name, email, role) => {
+        const user = { name, email , role}
+
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                Authorization: `bearer ${localStorage.getItem('accessToken')}`
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('User save', data)
+                getToken(email)
+            })
+    }
+
+    const handleSignInWithGoogle = () =>{
+        signInWithGoogle()
+        .then((result)=>{
+            const user = result.user;
+            console.log(user);
+            navigate('/')
+        })
+        .catch(error => console.error(error))
+    }
+
+
+    const getToken = email =>{
+        fetch(`http://localhost:5000/jwt?email=${email}`)
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem('Access-token', data.accessToken)
+        })
     }
 
     return (
@@ -54,13 +96,13 @@ const SignUp = () => {
                         <label className="label">
                             <span className="label-text">Seller/Buyer</span>
                         </label>
-                        <select {...register("seller", {
+                        <select {...register("role", {
                             required: "Please one option seller/buyer"
                         })} className="select w-full input-bordered">
                             <option value="seller">Seller</option>
                             <option value="buyer">Buyer</option>
                         </select>
-                        {errors.seller && <p className='text-red-600'>{errors.seller?.message}</p>}
+                        {errors.role && <p className='text-red-600'>{errors.role?.message}</p>}
                     </div>
                     <div className="form-control">
                         <label className="label">
@@ -95,7 +137,7 @@ const SignUp = () => {
                     <div className="divider text-xl font-bold">OR</div>
                 </div>
                 <div className="form-control mt-6">
-                    <button className="btn bordered-accent text-accent hover:bg-white bg-white">CONTINUE WITH GOOGLE</button>
+                    <button onClick={handleSignInWithGoogle} className="btn bordered-accent text-accent hover:bg-white bg-white">CONTINUE WITH GOOGLE</button>
                 </div>
             </div>
         </div >
