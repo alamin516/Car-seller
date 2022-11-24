@@ -1,4 +1,3 @@
-import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,15 +10,36 @@ const Navbar = () => {
     </>
 
     const navRight = <>
-        <li><Link>Md Alamin</Link></li>
-        <li>
-            <div className="avatar">
-                <div className="lg:w-12 w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img src="https://placeimg.com/192/192/people" />
-                </div>
-            </div>
+        {
+            user?.uid ?
+                <>
+                    { user?.displayName && <li><Link>Md Alamin</Link></li>}
+                    { user?.photoURL ? <li>
+                        <div className="avatar">
+                            <div className="lg:w-10 w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                <img src="https://placeimg.com/192/192/people" alt='' />
+                            </div>
+                        </div>
 
-        </li>
+                    </li> :
+                    <li>
+                    <div className="avatar">
+                        <div className="lg:w-10 w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <img src="https://placeimg.com/192/192/people" alt='' />
+                        </div>
+                    </div>
+
+                </li>
+                    
+                    }
+                    <li><Link to='/login'>SignOut</Link></li>
+                </>
+                :
+                <>
+                    <li><Link to='/login'>Login</Link></li>
+                    <li><Link to='/signup'>SignUp</Link></li>
+                </>
+        }
     </>
 
     return (
@@ -44,7 +64,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end hidden lg:flex">
                     <ul className="menu menu-horizontal p-0 text-white text-xl disabled:hover:bg-primary">
-                        {user.displayName && user?.photoURL && navRight}
+                        {navRight}
                     </ul>
                 </div>
             </div>

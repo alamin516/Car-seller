@@ -6,7 +6,7 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        mytheme: {
+        carSellerTheme: {
           primary: "#005DA8",
           secondary: "#cb1112",
           accent : "#1FB2A6",
@@ -14,6 +14,8 @@ module.exports = {
           "base-100" : "#2A303C",
         },
       },
+      "dark",
+      "light"
     ],
   },
   theme: {
