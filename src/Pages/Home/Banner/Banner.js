@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import banner from '../../../assets/images/Banner/Banner.png'
+import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 
 const Banner = () => {
-    const user = {}
+    const {user} = useContext(AuthContext)
+    
     return (
         <div className="hero min-h-screen h-1/2  relative" style={{ backgroundImage: `url(${banner})` }}>
             <div className='hero-overlay bg-opacity-20 bg-primary'></div>

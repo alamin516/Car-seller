@@ -1,14 +1,28 @@
-import { data } from 'autoprefixer';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const {createUser, updateUser} =useContext(AuthContext);
+
 
     const handleSignUp = data => {
-
         console.log(data)
+        createUser(data.email, data.password)
+        .then(result => {
+            const user = result.user;
+            console.log(user)
+            const userInfo ={
+                displayName: data.name
+
+            }
+            updateUser(userInfo)
+            .then(()=>{})
+            .catch(error => console.log(error))
+        })
+        .catch(error => console.log(error))
     }
 
     return (
@@ -71,9 +85,6 @@ const SignUp = () => {
 
                             })} placeholder="password" className="input input-bordered" />
                         {errors.password && <p className='text-red-600'>{errors.password?.message}</p>}
-                        {/* <label className="label">
-                            {signUpError && <p className='text-red-600'>{signUpError}</p>}
-                        </label> */}
                     </div>
                     <div className="form-control mt-6">
                         <button type="submit" className="btn btn-accent">Sign Up</button>
