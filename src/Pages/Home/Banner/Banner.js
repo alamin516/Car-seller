@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import banner from '../../../assets/images/Banner/Banner.png'
 
 const Banner = () => {
-    const user = {email: 'Alamin'}
+    const user = {}
     return (
         <div className="hero min-h-screen h-1/2  relative" style={{ backgroundImage: `url(${banner})` }}>
             <div className='hero-overlay bg-opacity-20 bg-primary'></div>
@@ -14,7 +14,7 @@ const Banner = () => {
                     <p className='text-2xl text-white mb-6'> <span className='w-6 h-6 bg-white mr-2'>.....</span> Volume discounts for buyers</p>
                     
                     {
-                        user?.email ? <button className="btn btn-primary">Get Started</button> : <Link><button className="btn btn-primary">Login</button></Link>
+                        user?.email ? <button className="btn btn-secondary">Get Started</button> : <Link to='/login'><button className="btn btn-secondary">Login</button></Link>
                     }
                 </div>
             </div>

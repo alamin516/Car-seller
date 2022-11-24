@@ -40,12 +40,11 @@ const SignUp = () => {
                         <label className="label">
                             <span className="label-text">Seller/Buyer</span>
                         </label>
-                        <select type='text' {...register('seller', {
+                        <select {...register("seller", {
                             required: "Please one option seller/buyer"
                         })} className="select w-full input-bordered">
-                            <option disabled>Pick your favorite Simpson</option>
-                            <option>Seller</option>
-                            <option>Buyer</option>
+                            <option value="seller">Seller</option>
+                            <option value="buyer">Buyer</option>
                         </select>
                         {errors.seller && <p className='text-red-600'>{errors.seller?.message}</p>}
                     </div>
@@ -60,14 +59,14 @@ const SignUp = () => {
                                     value: 6,
                                     message: 'Password must be at least 6 characters'
                                 },
-                                maxLength: {
-                                    value: 20,
-                                    message: 'Password must be less than 20 characters'
-                                },
-                                pattern: {
-                                    value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/,
-                                    message: "Password must be strong"
-                                }
+                                // maxLength: {
+                                //     value: 20,
+                                //     message: 'Password must be less than 20 characters'
+                                // },
+                                // pattern: {
+                                //     value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/,
+                                //     message: "Password must be strong"
+                                // }
 
 
                             })} placeholder="password" className="input input-bordered" />
