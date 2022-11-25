@@ -7,6 +7,8 @@ import Login from "../../Pages/Login/Login";
 import Navbar from "../../Pages/Shared/Navbar/Navbar";
 import SignUp from "../../Pages/SignUp/SignUp";
 import AllCars from "../../Pages/AllCars/AllCars";
+import DashboardLayout from "../../Layouts/DashboardLayout";
+import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +36,24 @@ const router = createBrowserRouter([
                 loader: async({params}) => fetch(`http://localhost:5000/category/${params.id}`),
                 element: <AllCars></AllCars>
             }
+        ]
+    },
+    {
+        path: '/dashboard',
+        element: <DashboardLayout></DashboardLayout>,
+        children: [
+            {
+                path: '/dashboard',
+                element: <Dashboard></Dashboard>
+            },
+            {
+                path: '/dashboard/allbuyer',
+                element: <Dashboard></Dashboard>
+            },
+            {
+                path: '/dashboard/allseller',
+                element: <Dashboard></Dashboard>
+            },
         ]
     },
     {
