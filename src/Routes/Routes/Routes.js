@@ -6,6 +6,7 @@ import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
 import Navbar from "../../Pages/Shared/Navbar/Navbar";
 import SignUp from "../../Pages/SignUp/SignUp";
+import AllCars from "../../Pages/AllCars/AllCars";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
                 path: '/signup',
                 element: <SignUp></SignUp>
             },
+            {
+                path: '/category/:id',
+                loader: async({params}) => fetch(`http://localhost:5000/category/${params.id}`),
+                element: <AllCars></AllCars>
+            }
         ]
     },
     {

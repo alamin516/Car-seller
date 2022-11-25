@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
@@ -13,8 +14,8 @@ const Login = () => {
         .then(result => {
             const user = result.user;
             console.log(user);
-            fetch('')
             navigate('/')
+            toast.success('Successfully Login')
         })
         .catch(error => {
             console.error(error.message)

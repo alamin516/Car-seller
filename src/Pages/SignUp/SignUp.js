@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
@@ -21,7 +22,6 @@ const SignUp = () => {
             }
             updateUser(userInfo)
             .then(()=>{
-                navigate('/')
                 saveUserDb(data.name, data.email, data.role)
 
             })
@@ -45,6 +45,9 @@ const SignUp = () => {
             .then(data => {
                 console.log('User save', data)
                 getToken(email)
+                navigate('/')
+                toast.success('User created successfully')
+
             })
     }
 
