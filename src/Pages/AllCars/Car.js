@@ -12,7 +12,7 @@ const Car = ({ car }) => {
                 <div >
                     {
                         resale_price ? <>
-                            <p className='text-2xl'>${resale_price}</p> <p><del>${price}</del></p>
+                            <p><span className='text-2xl font-bold'>${resale_price} </span><del>${price}</del></p>
                         </> :
                             <p className='text-2xl'>${price}</p>
                     }

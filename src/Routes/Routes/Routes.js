@@ -9,6 +9,11 @@ import SignUp from "../../Pages/SignUp/SignUp";
 import AllCars from "../../Pages/AllCars/AllCars";
 import DashboardLayout from "../../Layouts/DashboardLayout";
 import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
+import AllSeller from "../../Pages/Dashboard/AllSeller/AllSeller";
+import AllBuyer from "../../Pages/Dashboard/AllBuyer/AllBuyer";
+import AllProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
+import AddProduct from "../../Pages/Dashboard/AddProduct/AddProduct";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -40,7 +45,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout></DashboardLayout>,
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
         children: [
             {
                 path: '/dashboard',
@@ -48,11 +53,19 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/allbuyer',
-                element: <Dashboard></Dashboard>
+                element: <AllBuyer></AllBuyer>
             },
             {
                 path: '/dashboard/allseller',
-                element: <Dashboard></Dashboard>
+                element: <AllSeller></AllSeller>
+            },
+            {
+                path: '/dashboard/allproducts',
+                element: <AllProducts></AllProducts>
+            },
+            {
+                path: '/dashboard/addproduct',
+                element: <AddProduct></AddProduct>
             },
         ]
     },
