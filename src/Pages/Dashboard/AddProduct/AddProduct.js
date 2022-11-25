@@ -84,7 +84,7 @@ const AddProduct = () => {
                     </label>
                     <select {...register("categoryId")} className="select select-bordered w-full ">
                         {
-                            categories.map(category => <option
+                            categories.map(category => <option defaultValue={category._id}
                                 key={category._id}
                                 vlaue={category._id}
                             >{category.category}</option>)

@@ -9,6 +9,7 @@ const auth = getAuth(app)
 
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false)
     const googleProvider = new GoogleAuthProvider()
 
 
@@ -39,6 +40,7 @@ const AuthProvider = ({children}) => {
         const unsubscribe = onAuthStateChanged(auth, currentUser =>{
             // console.log('User state changed', currentUser)
             setUser(currentUser)
+            setLoading(false)
         })
 
         return () => unsubscribe()
@@ -54,7 +56,8 @@ const AuthProvider = ({children}) => {
         signIn,
         logOut,
         signInWithGoogle,
-        forgetPassword
+        forgetPassword,
+        loading
 
     }
     return (
