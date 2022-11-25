@@ -86,7 +86,7 @@ const AddProduct = () => {
                         {
                             categories.map(category => <option defaultValue={category._id}
                                 key={category._id}
-                                vlaue={category._id}
+                                value={category._id}
                             >{category.category}</option>)
                         }
 

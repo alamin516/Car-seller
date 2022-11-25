@@ -8,9 +8,9 @@ const HomeCategory = ({ category }) => {
     return (
         <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
-                <img src={categoryImg} alt="" />
+               <Link to={`/category/${_id}`}> <img src={categoryImg} alt="" /></Link>
                 <div className="card-actions justify-center">
-                    <Link to={`/category/${_id}`}><button className="btn btn-secondary">{name}</button></Link>
+                    <Link to={`/category/${_id}`}><button className="btn btn-secondary w-full">{name}</button></Link>
                 </div>
             </div>
         </div>
