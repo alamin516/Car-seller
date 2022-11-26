@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
-const Car = ({ car }) => {
+const Car = ({ car, setProduct }) => {
+    const { user } = useContext(AuthContext)
     const { _id, name, img, location, price, resale_price, description } = car;
     return (
         <div className="card bg-base-100 shadow-xl">
@@ -22,7 +25,10 @@ const Car = ({ car }) => {
                 <p></p>
 
                 <div className="card-actions justify-center w-12/12">
-                    <button className='btn btn-md btn-secondary'>Booked Now</button>
+                    {user?.email ? <label htmlFor="order-modal"
+                        className="btn btn-primary text-white"
+                        onClick={() => setProduct(car)}
+                    >Purchase Now</label> : <Link to='/login'><button className='btn btn-md btn-secondary'>Booked Now</button></Link>}
                 </div>
             </div>
         </div>
