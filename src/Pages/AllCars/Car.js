@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Car = ({ car }) => {
-    const { _id, name, img, location, price, resale_price, descriptions } = car;
+    const { _id, name, img, location, price, resale_price, description } = car;
     return (
         <div className="card bg-base-100 shadow-xl">
             <figure><img src={img} alt="Shoes" /></figure>
@@ -17,7 +17,7 @@ const Car = ({ car }) => {
                             <p className='text-2xl'>${price}</p>
                     }
                 </div>
-                <p>{descriptions}</p>
+                <p>{description.slice(0, 80)}.....</p>
                 <p>{location}</p>
                 <p></p>
 
