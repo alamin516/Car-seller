@@ -50,6 +50,7 @@ const AddProduct = () => {
                         seller: data.seller,
                         name: data.name,
                         email: data.email,
+                        phone: data.phone,
                         categoryId: data.categoryId,
                         img: imgData.data.url,
                         location: data.location,
@@ -93,6 +94,12 @@ const AddProduct = () => {
                 </div>
                 <div className="form-control">
                     <label className="label">
+                        <span className="label-text">Phone Number</span>
+                    </label>
+                    <input type="tel" {...register("phone")} placeholder="Phone" className="input input-bordered" />
+                </div>
+                <div className="form-control">
+                    <label className="label">
                         <span className="label-text">Email</span>
                     </label>
                     <input type="email" readOnly defaultValue={user?.email} {...register("email")} placeholder="email" className="input input-bordered" />
@@ -119,7 +126,7 @@ const AddProduct = () => {
                     <label className="label">
                         <span className="label-text">Used Time</span>
                     </label>
-                    <input type="text" {...register("used_time")} placeholder="Resale Price" className="input input-bordered" />
+                    <input type="text" {...register("used_time")} placeholder="Used time" className="input input-bordered" />
                 </div>
                 <div className="form-control">
                     <label className="label">
@@ -140,7 +147,7 @@ const AddProduct = () => {
                     <select {...register("location")} className="select select-bordered w-full ">
                         <option disabled selected>Selected Location</option>
                         {
-                            locations.map(location => <option defaultValue={location.location}
+                            locations.map(location => <option
                                 key={location._id}
                                 value={location.location}
                             >{location.location}</option>)
@@ -156,14 +163,13 @@ const AddProduct = () => {
                     })} className="select select-bordered w-full ">
                         <option disabled selected>Selected Category</option>
                         {
-                            categories.map(category => <option defaultValue={category._id}
+                            categories.map(category => <option
                                 key={category._id}
                                 value={category._id}
                             >{category.category}</option>)
                         }
 
                     </select>
-                    {errors.categoryId && <p>Error</p>}
                 </div>
                 <div className="form-control">
                     <label className="label">Description</label>

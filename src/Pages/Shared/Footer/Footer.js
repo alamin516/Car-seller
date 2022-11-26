@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../../assets/images/logo/logo.png'
 
 const Footer = () => {
     return (
@@ -28,7 +29,7 @@ const Footer = () => {
             </footer>
             <footer className="footer px-10 py-4 border-t text-base-content max-w-[1280px] mx-auto">
                 <div className="items-center grid-flow-col">
-                    <p><span className='text-5xl'>CarSeller</span> <br />Providing reliable service since 2010</p>
+                    <p><img src={logo} alt="" /> <br />Providing reliable service since 2010</p>
                 </div>
                 <div className="md:place-self-center md:justify-self-end">
                     <div className="grid grid-flow-col gap-4">

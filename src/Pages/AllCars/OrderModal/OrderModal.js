@@ -1,20 +1,35 @@
+import { useQuery } from '@tanstack/react-query';
 import { data } from 'autoprefixer';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 
-const OrderModal = ({ product, setProduct , refetch}) => {
+const OrderModal = ({ product, setProduct, refetch }) => {
     const { user } = useContext(AuthContext);
-    const {register, handleSubmit, formState: {errors}} = useForm();
-    const { price, name } = product;
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { price, resale_price, name } = product;
+    const navigate = useNavigate();
+
+    const { data: locations = [] } = useQuery({
+        queryKey: ['locations'],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5000/locations`);
+            const data = await res.json();
+            return data
+        }
+    })
 
 
     const handleOrder = data => {
-        
-
         const order = {
-            
+            title: name,
+            price: data.price,
+            buyer: data.name,
+            email: data.email,
+            phone: data.phone,
+            location: data.location,
         }
 
         fetch('http://localhost:5000/orders', {
@@ -26,14 +41,15 @@ const OrderModal = ({ product, setProduct , refetch}) => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.acknowledged){
-                    setProduct(null)
-                    toast.success(`Booking Successfully Done`)
+                if (data.acknowledged) {
+                    setProduct('')
+                    toast.success(`Order Successfully Done`)
                     refetch()
+                    navigate('/dashboard/myorders')
 
                 }
-                else{
-                    setProduct(null)
+                else {
+                    setProduct('')
                     toast.error(data.message)
                 }
 
@@ -51,10 +67,7 @@ const OrderModal = ({ product, setProduct , refetch}) => {
                     <h3 className="text-lg font-bold">{name}</h3>
                     <form className='mt-8' onSubmit={handleSubmit(handleOrder)}>
                         <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Name</span>
-                            </label>
-                            <input type="text" {...register("name", {
+                            <input readOnly defaultValue={user?.displayName} type="text" {...register("name", {
                                 required: 'Name is required'
 
                             })} placeholder="name" className="input input-bordered" />
@@ -64,7 +77,7 @@ const OrderModal = ({ product, setProduct , refetch}) => {
                             <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
-                            <input type="email" {...register("email", {
+                            <input readOnly defaultValue={user?.email} type="email" {...register("email", {
                                 required: 'Email Address is required'
 
                             })} placeholder="email" className="input input-bordered" />
@@ -72,39 +85,41 @@ const OrderModal = ({ product, setProduct , refetch}) => {
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Seller/Buyer</span>
+                                <span className="label-text">Phone Number</span>
                             </label>
-                            <select {...register("role", {
-                                required: "Please one option seller/buyer"
-                            })} className="select w-full input-bordered">
-                                <option value="seller">Seller</option>
-                                <option value="buyer">Buyer</option>
-                            </select>
-                            {errors.role && <p className='text-red-600'>{errors.role?.message}</p>}
+                            <input type="tel" {...register("phone", {
+                                required: 'Phone Address is required'
+
+                            })} placeholder="Phone Number" className="input input-bordered" />
+                            {errors.phone && <p className='text-red-600'>{errors.phone?.message}</p>}
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Password</span>
+                                <span className="label-text">Location</span>
                             </label>
-                            <input type="password" {...register("password",
+                            <select {...register("location", {
+                                required: "alllla"
+                            })} className="input input-bordered">
+                                <option selected disabled>Select your location</option>
                                 {
-                                    required: 'Password is required',
-                                    minLength: {
-                                        value: 6,
-                                        message: 'Password must be at least 6 characters'
-                                    },
-                                    // maxLength: {
-                                    //     value: 20,
-                                    //     message: 'Password must be less than 20 characters'
-                                    // },
-                                    // pattern: {
-                                    //     value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/,
-                                    //     message: "Password must be strong"
-                                    // }
+                                    locations.map(location =>
+                                        <option
+                                            value={location.location}
+                                            key={location._id}>
+                                            {location.location}
+                                        </option>)
+                                }
 
-
-                                })} placeholder="password" className="input input-bordered" />
-                            {errors.password && <p className='text-red-600'>{errors.password?.message}</p>}
+                            </select>
+                            {errors.location?.type === 'required' && <p className='text-red-600'>{errors.location?.message}</p>}
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Price</span>
+                            </label>
+                            {resale_price !== '' ? <input readOnly defaultValue={resale_price} type="text" {...register("price")} className="input input-bordered" /> :
+                                <input readOnly defaultValue={price} type="text" {...register("price")} className="input input-bordered" />
+                            }
                         </div>
                         <div className="form-control mt-6">
                             <button type="submit" className="btn btn-accent">Order</button>

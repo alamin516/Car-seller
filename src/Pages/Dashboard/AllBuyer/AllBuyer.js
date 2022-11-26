@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import toast from 'react-hot-toast';
+import Loading from '../../Shared/Loading/Loading';
 
 const AllBuyer = () => {
 
-    const {data : buyers = []} = useQuery({
+    const {data : buyers = [], isLoading, refetch} = useQuery({
         queryKey: ['buyers'],
         queryFn: async () =>{
             const res = await fetch('http://localhost:5000/users/buyer?role=buyer');
@@ -12,10 +14,22 @@ const AllBuyer = () => {
         }
     })
 
-    const handlebuyerDelete = id =>{
-        console.log(id)
+    const handlebuyerDelete = buyer =>{
+        fetch(`http://localhost:5000/users/buyer/${buyer?._id}` ,{
+            method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.acknowledged){
+                toast.success(`${buyer?.name} deleted successfully`)
+                refetch()
+            }
+        })
     }
 
+    if(isLoading){
+        return <Loading></Loading>
+    }
 
     return (
         <div className='p-5'>
@@ -24,7 +38,7 @@ const AllBuyer = () => {
                 <table className="table w-full">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>idx</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Delete</th>
@@ -36,7 +50,7 @@ const AllBuyer = () => {
                             <th>{i + 1}</th>
                             <td>{buyer?.name}</td>
                             <td>{buyer?.email}</td>
-                            <td><button onClick={()=> handlebuyerDelete(buyer._id)} className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</button></td>
+                            <td><button onClick={()=> handlebuyerDelete(buyer)} className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</button></td>
                         </tr>)
                         }
                     </tbody>

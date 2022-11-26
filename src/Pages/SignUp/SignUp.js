@@ -22,7 +22,7 @@ const SignUp = () => {
             }
             updateUser(userInfo)
             .then(()=>{
-                saveUserDb(data.name, data.email, data.role)
+                saveUserDb(data.name, data.email, data.role, data.phone)
 
             })
             .catch(error => console.log(error))
@@ -30,8 +30,8 @@ const SignUp = () => {
         .catch(error => console.log(error))
     }
 
-    const saveUserDb = (name, email, role) => {
-        const user = { name, email , role}
+    const saveUserDb = (name, email, role, phone) => {
+        const user = { name, email , role, phone}
 
         fetch('http://localhost:5000/users', {
             method: 'POST',
@@ -94,6 +94,16 @@ const SignUp = () => {
 
                         })} placeholder="email" className="input input-bordered" />
                         {errors.email && <p className='text-red-600'>{errors.email?.message}</p>}
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Phone Number</span>
+                        </label>
+                        <input type="tel" {...register("phone", {
+                            required: 'Phone Number is required'
+
+                        })} placeholder="phone" className="input input-bordered" />
+                        {errors.phone && <p className='text-red-600'>{errors.phone?.message}</p>}
                     </div>
                     <div className="form-control">
                         <label className="label">

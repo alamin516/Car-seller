@@ -4,7 +4,7 @@ import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
 const Car = ({ car, setProduct }) => {
     const { user } = useContext(AuthContext)
-    const { _id, name, img, location, price, resale_price, description } = car;
+    const { _id, name, img, location, price, resale_price, description, email, seller, condition, used_time } = car;
     return (
         <div className="card bg-base-100 shadow-xl">
             <figure><img src={img} alt="Shoes" /></figure>
@@ -15,14 +15,17 @@ const Car = ({ car, setProduct }) => {
                 <div >
                     {
                         resale_price ? <>
-                            <p><span className='text-2xl font-bold'>${resale_price} </span><del>${price}</del></p>
+                            <p>Price: <span className='text-2xl font-bold'>${resale_price} </span><del>${price}</del></p>
                         </> :
                             <p className='text-2xl'>${price}</p>
                     }
                 </div>
-                <p>{description.slice(0, 80)}.....</p>
-                <p>{location}</p>
-                <p></p>
+                <p>{description.slice(0, 80) + '.....'}</p>
+                <p>Location: {location}</p>
+                <p>Condition: {condition}</p>
+                <p>Used: {used_time} yrs</p>
+                <p>Seller: {seller}</p>
+                <p>email: {email}</p>
 
                 <div className="card-actions justify-center w-12/12">
                     {user?.email ? <label htmlFor="order-modal"
