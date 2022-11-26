@@ -1,9 +1,60 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useContext } from 'react';
+import toast from 'react-hot-toast';
+import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 
 const MyProducts = () => {
+    const {user} = useContext(AuthContext);
+
+    const {data: products = [], refetch} = useQuery({
+        queryKey: ['products'],
+        queryFn: async () =>{
+            const res = await fetch(`http://localhost:5000/products/my-products?email=${user?.email}`);
+            const data = await res.json();
+            return data
+        }
+    })
+
+    const handleProductDelete = product =>{
+        fetch(`http://localhost:5000/products/${product._id}` ,{
+            method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.acknowledged){
+                toast.success(`${product?.name} deleted successfully`)
+                refetch()
+            }
+        })
+    }
+
     return (
-        <div>
-            
+        <div className='p-5'>
+            <h2 className='text-3xl mb-5'>My Products : {products.length}</h2>
+            <div className="overflow-x-auto">
+                <table className="table w-full">
+                    <thead>
+                        <tr>
+                            <th>idx</th>
+                            <th>Name</th>
+                            <th>email</th>
+                            <th>price</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            products.map((product, i )=> <tr key={product._id}>
+                            <th>{i + 1}</th>
+                            <td>{product?.name}</td>
+                            <td>{product?.email}</td>
+                            <td>${product?.price}</td>
+                            <td><button onClick={()=> handleProductDelete(product)} className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</button></td>
+                        </tr>)
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
