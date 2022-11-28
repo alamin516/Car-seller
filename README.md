@@ -6,6 +6,7 @@ https://github.com/programming-hero-web-course-4/b612-used-products-resale-clien
 https://github.com/programming-hero-web-course-4/b612-used-products-resale-server-side-alamin516
 
 ### Live site Link: 
+https://car-seller-12.web.app/
 
 
 ### Admin Login
@@ -17,4 +18,4 @@ password: 123456
 * Create dashboard for each use admin/seller/buyer
 * upload product and delete product 
 * Payment system 
-*
+* Admin can delete seller and buyer
