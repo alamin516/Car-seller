@@ -10,12 +10,18 @@ const MyProducts = () => {
     const {data: products = [], refetch, isLoading} = useQuery({
         queryKey: ['products'],
         queryFn: async () =>{
-            const res = await fetch(`http://localhost:5000/products/my-products?email=${user?.email}`);
+            const res = await fetch(`http://localhost:5000/products/my-products?email=${user?.email}`, {
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
             const data = await res.json();
             return data
         }
     })
 
+
+   
     
 
     const handleProductDelete = product =>{
@@ -30,7 +36,7 @@ const MyProducts = () => {
             }
         })
     }
-    
+
     if(isLoading){
         return <Loading></Loading>
     }
@@ -44,17 +50,17 @@ const MyProducts = () => {
                         <tr>
                             <th>idx</th>
                             <th>Name</th>
-                            <th>email</th>
+                            <th>img</th>
                             <th>price</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            products.map((product, i )=> <tr key={product._id}>
+                            products?.map((product, i )=> <tr key={product._id}>
                             <th>{i + 1}</th>
                             <td>{product?.name}</td>
-                            <td>{product?.email}</td>
+                            <td><img className='w-24 h-24' src={product?.img} alt="" /></td>
                             <td>${product?.price}</td>
                             <td><button onClick={()=> handleProductDelete(product)} className='btn btn-sm bg-red-600 border-red-600 text-white'>Delete</button></td>
                         </tr>)

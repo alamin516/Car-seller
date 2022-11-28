@@ -3,34 +3,44 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
+import useToken from '../../hooks/useToken';
 
 const Login = () => {
     const { register, handleSubmit, } = useForm();
-    const { signIn, SignInWithGoogle, forgetPassword } = useContext(AuthContext);
+    const { signIn, signInWithGoogle, forgetPassword } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate()
+    const [createUserEmail, setCreateUserEmail] = useState('')
+    const [token] = useToken(createUserEmail)
+    const [loginError, setLoginError] = useState('')
 
+    
     const from = location.state?.from.pathname || '/'
+    
+    if(token){
+        navigate(from, {replace: true})
+    }
 
     const handleLogin = data => {
+        setLoginError('')
         signIn(data.email, data.password)
         .then(result => {
             const user = result.user;
-            console.log(user);
-            navigate(from , {replace: true})
+            setCreateUserEmail(user?.email)
             toast.success('Successfully Login')
         })
         .catch(error => {
-            console.error(error.message)
+            setLoginError(error.message)
         })
     }
 
 
     const handleSignInWithGoogle = () =>{
-        SignInWithGoogle()
+        signInWithGoogle()
         .then((result)=>{
             const user = result.user;
             console.log(user);
+            navigate('/')
         })
         .catch(error => console.error(error))
     }
@@ -68,15 +78,18 @@ const Login = () => {
                         </label>
                     </div>
                     <div className="form-control mt-6">
-                        <button type="submit" className="btn btn-accent">Login</button>
+                            { loginError && <p className='text-red-500'>{loginError}</p>}
+                    </div>
+                    <div className="form-control mt-6">
+                        <button type="submit" className="btn btn-secondary">Login</button>
                     </div>
                 </form>
                 <div className='text-center'>
                     <p className='my-6'>New to Seller/buyer? <Link className='text-primary' to='/signup'>Create new account</Link></p>
-                    <div className="divider text-xl font-bold">OR</div>
+                    <div className="text-xl font-bold">OR</div>
                 </div>
                 <div className="form-control mt-6">
-                    <button onClick={handleSignInWithGoogle} className="btn bordered-accent text-accent hover:bg-white bg-white">CONTINUE WITH GOOGLE</button>
+                    <button onClick={handleSignInWithGoogle} className="btn bordered-secondary text-black hover:bg-secondary hover:text-white bg-white">CONTINUE WITH GOOGLE</button>
                 </div>
                 <div className="form-control mt-6 text-center">
                    <p>Admin email: admin@admin.com</p>

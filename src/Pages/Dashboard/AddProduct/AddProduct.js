@@ -1,14 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
+import useVerified from '../../../hooks/useVerified';
 
 const AddProduct = () => {
     const { user } = useContext(AuthContext)
     const { handleSubmit, register, formState: { errors } } = useForm();
     const navigate = useNavigate();
+    const [verifiedSeller] = useVerified(user?.email)
     const imgHostingApiKey = process.env.REACT_APP_imgbb_api_key;
 
     const { data: categories = [] } = useQuery({
@@ -20,9 +22,7 @@ const AddProduct = () => {
         }
     })
 
-
-
-    const { data: locations = [] } = useQuery({
+    const { data: locations = [], refetch} = useQuery({
         queryKey: ['locations'],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/locations`);
@@ -30,6 +30,8 @@ const AddProduct = () => {
             return data
         }
     })
+
+
 
 
     const handleAddProduct = data => {
@@ -57,26 +59,28 @@ const AddProduct = () => {
                         price: data.price,
                         resale_price: data.resale_price,
                         description: data.description,
-                        condition : data.condition,
-                        used_time : data.used_time
+                        condition: data.condition,
+                        used_time: data.used_time,
+                        verified_seller : verifiedSeller.verified
 
                     }
 
                     fetch(`http://localhost:5000/products`, {
                         method: 'POST',
                         headers: {
-                            'content-type' : 'application/json',
+                            'content-type': 'application/json',
                             authorization: `bearer ${localStorage.getItem('accessToken')}`
                         },
                         body: JSON.stringify(product)
                     })
-                    .then(res => res.json())
-                    .then(data =>{
-                        if(data.acknowledged){
-                            toast.success(`Product added successfully`);
-                            navigate('/dashboard/myproducts')
-                        }
-                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.acknowledged) {
+                                toast.success(`Product added successfully`);
+                                navigate('/dashboard/myproducts')
+                                refetch()
+                            }
+                        })
                 }
             })
 
@@ -96,7 +100,7 @@ const AddProduct = () => {
                     <label className="label">
                         <span className="label-text">Phone Number</span>
                     </label>
-                    <input type="tel" {...register("phone")} placeholder="Phone" className="input input-bordered" />
+                    <input readOnly defaultValue={verifiedSeller?.phone} type="tel" {...register("phone")} placeholder="Phone" className="input input-bordered" />
                 </div>
                 <div className="form-control">
                     <label className="label">
@@ -133,11 +137,11 @@ const AddProduct = () => {
                         <span className="label-text">Condition type</span>
                     </label>
                     <select {...register("condition")} className="select select-bordered w-full ">
-                    <option disabled selected>Select type</option>
-                    <option value="excellent">excellent</option>
-                    <option value="good">Good</option>
-                    <option value="fair">Fair</option>
-                       
+                        <option disabled selected>Select type</option>
+                        <option value="excellent">excellent</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+
                     </select>
                 </div>
                 <div className="form-control">
@@ -180,7 +184,7 @@ const AddProduct = () => {
                     <input type="file" {...register("product_img")} placeholder="Photo Upload" className="input input-bordered" />
                 </div>
                 <div className="form-control mt-6">
-                    <button type="submit" className="btn bg-red-600 text-white border-none">Add A Product</button>
+                    <button type="submit" className="btn bg-secondary text-white border-none">Add A Product</button>
                 </div>
             </form>
         </div>

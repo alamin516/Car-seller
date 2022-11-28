@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { data } from 'autoprefixer';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -9,7 +8,7 @@ import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 const OrderModal = ({ product, setProduct, refetch }) => {
     const { user } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { price, resale_price, name } = product;
+    const { price, resale_price, name , email, img} = product;
     const navigate = useNavigate();
 
     const { data: locations = [] } = useQuery({
@@ -25,11 +24,13 @@ const OrderModal = ({ product, setProduct, refetch }) => {
     const handleOrder = data => {
         const order = {
             title: name,
+            product_img: img,
             price: data.price,
             buyer: data.name,
             email: data.email,
             phone: data.phone,
             location: data.location,
+            seller_email : email,
         }
 
         fetch('http://localhost:5000/orders', {
@@ -122,7 +123,7 @@ const OrderModal = ({ product, setProduct, refetch }) => {
                             }
                         </div>
                         <div className="form-control mt-6">
-                            <button type="submit" className="btn btn-accent">Order</button>
+                            <button type="submit" className="btn btn-secondary">Order</button>
                         </div>
                     </form>
                 </div>

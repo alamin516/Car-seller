@@ -17,10 +17,14 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
 import AdminRoute from "../AdminRoute/AdminRoute";
 import MyOrders from "../../Pages/Dashboard/MyOrders/MyOrders";
+import MyBuyers from "../../Pages/Dashboard/MyBuyers/MyBuyers";
+import DisplayError from "../../Pages/Shared/DisplayError/DisplayError";
+import Payment from "../../Pages/Dashboard/Payment/Payment";
 
 const router = createBrowserRouter([
     {
         path: '/',
+        errorElement: <DisplayError></DisplayError>,
         element: <Main></Main>,
         children: [
             {
@@ -42,12 +46,13 @@ const router = createBrowserRouter([
             {
                 path: '/category/:id',
                 loader: async({params}) => fetch(`http://localhost:5000/category/${params.id}`),
-                element: <AllCars></AllCars>
+                element: <PrivateRoute><AllCars></AllCars></PrivateRoute>
             }
         ]
     },
     {
         path: '/dashboard',
+        errorElement: <DisplayError></DisplayError>,
         element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
         children: [
             {
@@ -74,6 +79,16 @@ const router = createBrowserRouter([
                 path: '/dashboard/myorders',
                 element: <MyOrders></MyOrders>
             },
+            {
+                path: '/dashboard/payment/:id',
+                loader: async({params})=> fetch(`http://localhost:5000/orders/${params.id}`),
+                element: <Payment></Payment>
+            },
+            {
+                path: '/dashboard/mybuyers',
+                element: <MyBuyers></MyBuyers>
+            },
+            
         ]
     },
     {

@@ -3,35 +3,46 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
+import useToken from '../../hooks/useToken';
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const {createUser, updateUser, signInWithGoogle} = useContext(AuthContext);
+    const { createUser, updateUser, signInWithGoogle } = useContext(AuthContext);
+    const [createUserEmail, setCreateUserEmail] = useState('')
+    const [token] = useToken(createUserEmail)
     const navigate = useNavigate()
+    const [error, setError] = useState('')
 
+    if (token) {
+        return navigate('/')
+    }
 
     const handleSignUp = data => {
+        setError('')
         console.log(data)
         createUser(data.email, data.password)
-        .then(result => {
-            const user = result.user;
-            console.log(user)
-            const userInfo ={
-                displayName: data.name
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+                const userInfo = {
+                    displayName: data.name
 
-            }
-            updateUser(userInfo)
-            .then(()=>{
-                saveUserDb(data.name, data.email, data.role, data.phone)
+                }
+                updateUser(userInfo)
+                    .then(() => {
+                        saveUserDb(data.name, data.email, data.role, data.phone)
 
+                    })
+                    .catch(error => console.log(error))
             })
-            .catch(error => console.log(error))
-        })
-        .catch(error => console.log(error))
+            .catch(error => {
+                console.error(error)
+                setError(error.message)
+            })
     }
 
     const saveUserDb = (name, email, role, phone) => {
-        const user = { name, email , role, phone}
+        const user = { name, email, role, phone }
 
         fetch('http://localhost:5000/users', {
             method: 'POST',
@@ -43,32 +54,22 @@ const SignUp = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('User save', data)
-                getToken(email)
-                navigate('/')
+                setCreateUserEmail(email)
                 toast.success('User created successfully')
 
             })
     }
 
-    const handleSignInWithGoogle = () =>{
+    const handleSignInWithGoogle = () => {
         signInWithGoogle()
-        .then((result)=>{
-            const user = result.user;
-            console.log(user);
-            navigate('/')
-        })
-        .catch(error => console.error(error))
+            .then((result) => {
+                const user = result.user;
+                console.log(user);
+                navigate('/')
+            })
+            .catch(error => console.error(error))
     }
 
-
-    const getToken = email =>{
-        fetch(`http://localhost:5000/jwt?email=${email}`)
-        .then(res => res.json())
-        .then(data => {
-            localStorage.setItem('Access-token', data.accessToken)
-        })
-    }
 
     return (
         <div className='min-h-screen flex justify-center items-center p-6'>
@@ -128,29 +129,22 @@ const SignUp = () => {
                                     value: 6,
                                     message: 'Password must be at least 6 characters'
                                 },
-                                // maxLength: {
-                                //     value: 20,
-                                //     message: 'Password must be less than 20 characters'
-                                // },
-                                // pattern: {
-                                //     value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/,
-                                //     message: "Password must be strong"
-                                // }
-
-
                             })} placeholder="password" className="input input-bordered" />
                         {errors.password && <p className='text-red-600'>{errors.password?.message}</p>}
                     </div>
+                    <label className="label">
+                        {error && <span className="label-text text-red-500">{error}</span>}
+                    </label>
                     <div className="form-control mt-6">
-                        <button type="submit" className="btn btn-accent">Sign Up</button>
+                        <button type="submit" className="btn btn-secondary">Sign Up</button>
                     </div>
                 </form>
                 <div className='text-center'>
                     <p className='my-6'>Already have an account? <Link className='text-primary' to='/login'>Please login</Link></p>
-                    <div className="divider text-xl font-bold">OR</div>
+                    <div className="text-xl font-bold">OR</div>
                 </div>
                 <div className="form-control mt-6">
-                    <button onClick={handleSignInWithGoogle} className="btn bordered-accent text-accent hover:bg-white bg-white">CONTINUE WITH GOOGLE</button>
+                    <button onClick={handleSignInWithGoogle} className="btn bordered-secondary text-black hover:bg-secondary hover:text-white bg-white">CONTINUE WITH GOOGLE</button>
                 </div>
             </div>
         </div >
