@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/category/:id',
-                loader: async({params}) => fetch(`http://localhost:5000/category/${params.id}`),
+                loader: async({params}) => fetch(`https://car-seller-server.vercel.app/category/${params.id}`),
                 element: <PrivateRoute><AllCars></AllCars></PrivateRoute>
             }
         ]
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/payment/:id',
-                loader: async({params})=> fetch(`http://localhost:5000/orders/${params.id}`),
+                loader: async({params})=> fetch(`https://car-seller-server.vercel.app/orders/${params.id}`),
                 element: <Payment></Payment>
             },
             {

@@ -18,7 +18,7 @@ const AddProduct = () => {
     const { data: categories = [] } = useQuery({
         queryKey: ['categories'],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/categories`);
+            const res = await fetch(`https://car-seller-server.vercel.app/categories`);
             const data = await res.json();
             return data
         }
@@ -27,7 +27,7 @@ const AddProduct = () => {
     const { data: locations = [], refetch} = useQuery({
         queryKey: ['locations'],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/locations`);
+            const res = await fetch(`https://car-seller-server.vercel.app/locations`);
             const data = await res.json();
             return data
         }
@@ -67,7 +67,7 @@ const AddProduct = () => {
 
                     }
 
-                    fetch(`http://localhost:5000/products`, {
+                    fetch(`https://car-seller-server.vercel.app/products`, {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

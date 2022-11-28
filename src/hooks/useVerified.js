@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 const useVerified = email => {
     const [verifiedSeller, setVerifiedSeller] = useState({})
     useEffect(() => {
-            fetch(`http://localhost:5000/users/verified/seller?email=${email}`)
+            fetch(`https://car-seller-server.vercel.app/users/verified/seller?email=${email}`)
                 .then(res => res.json())
                 .then(data => {
                     setVerifiedSeller(data)

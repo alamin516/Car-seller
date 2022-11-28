@@ -14,7 +14,7 @@ const OrderModal = ({ product, setProduct, refetch }) => {
     const { data: locations = [] } = useQuery({
         queryKey: ['locations'],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/locations`);
+            const res = await fetch(`https://car-seller-server.vercel.app/locations`);
             const data = await res.json();
             return data
         }
@@ -33,7 +33,7 @@ const OrderModal = ({ product, setProduct, refetch }) => {
             seller_email : email,
         }
 
-        fetch('http://localhost:5000/orders', {
+        fetch('https://car-seller-server.vercel.app/orders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
