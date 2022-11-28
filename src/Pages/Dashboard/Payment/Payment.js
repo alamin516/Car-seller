@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 import CheckoutForm from './CheckoutForm';
 import {Elements} from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import useTitle from '../../../hooks/useTitle';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY);
 
@@ -10,6 +11,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY);
 const Payment = () => {
     const order = useLoaderData();
     const {price, title} = order;
+    useTitle('Payment')
 
     return (
         <div className='p-5'>

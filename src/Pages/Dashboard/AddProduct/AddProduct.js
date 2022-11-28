@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
+import useTitle from '../../../hooks/useTitle';
 import useVerified from '../../../hooks/useVerified';
 
 const AddProduct = () => {
@@ -12,6 +13,7 @@ const AddProduct = () => {
     const navigate = useNavigate();
     const [verifiedSeller] = useVerified(user?.email)
     const imgHostingApiKey = process.env.REACT_APP_imgbb_api_key;
+    useTitle('add product')
 
     const { data: categories = [] } = useQuery({
         queryKey: ['categories'],

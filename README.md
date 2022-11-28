@@ -13,7 +13,8 @@ email: admin@admin.com
 password: 123456
 
 
-* 
-*
-*
+* Login and signup Authentication system
+* Create dashboard for each use admin/seller/buyer
+* upload product and delete product 
+* Payment system 
 *

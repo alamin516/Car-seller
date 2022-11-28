@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
+import useTitle from '../../hooks/useTitle';
 import useToken from '../../hooks/useToken';
 
 const Login = () => {
@@ -13,6 +14,7 @@ const Login = () => {
     const [createUserEmail, setCreateUserEmail] = useState('')
     const [token] = useToken(createUserEmail)
     const [loginError, setLoginError] = useState('')
+    useTitle('Login')
 
     
     const from = location.state?.from.pathname || '/'

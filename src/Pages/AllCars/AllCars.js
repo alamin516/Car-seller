@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import useTitle from '../../hooks/useTitle';
 import Loading from '../Shared/Loading/Loading';
 import Car from './Car';
 import OrderModal from './OrderModal/OrderModal';
@@ -9,6 +10,7 @@ const AllCars = () => {
     const category = useLoaderData();
     const [product, setProduct] = useState(null)
     const { _id } = category;
+    useTitle('all cars')
 
     const { data: cars = [], isLoading, refetch } = useQuery({
         queryKey: ['cars'],
