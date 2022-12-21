@@ -24,6 +24,7 @@ const AllCars = () => {
     if (isLoading) {
         return <Loading></Loading>
     }
+    refetch()
 
     return (
         <div className='container p-6'>

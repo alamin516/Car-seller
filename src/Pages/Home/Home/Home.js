@@ -2,6 +2,7 @@ import React from 'react';
 import useTitle from '../../../hooks/useTitle';
 import Banner from '../Banner/Banner';
 import GetInTouch from '../GetInTouch/GetInTouch';
+import HomeAbout from '../HomeAbout/HomeAbout';
 import HomeCategory from '../HomeCategory/HomeCategories';
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
         <div>
             <Banner></Banner>
             <HomeCategory></HomeCategory>
+            <HomeAbout></HomeAbout>
             <GetInTouch></GetInTouch>
         </div>
     );

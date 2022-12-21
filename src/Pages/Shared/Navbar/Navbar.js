@@ -24,7 +24,7 @@ const Navbar = () => {
         {
             user?.uid ?
                 <>
-                    {user?.displayName && <li><Link>Md Alamin</Link></li>}
+                    {user?.displayName && <li><Link>{user?.displayName}</Link></li>}
                     {user?.photoURL ? <li>
                         <div className="avatar">
                             <div className="lg:w-10 w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
