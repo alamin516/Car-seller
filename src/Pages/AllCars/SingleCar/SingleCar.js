@@ -13,6 +13,7 @@ const SingleCar = () => {
     const [singleProduct, setSingleProduct] = useState(null)
 
 
+
     return (
         <div>
             <div className='container lg:flex lg:py-20 py-10'>
@@ -42,7 +43,7 @@ const SingleCar = () => {
                     {user?.email ? <label htmlFor="order-modal"
                         className="btn btn-secondary text-white w-full"
                         onClick={() => setSingleProduct(product)}
-                    >Buy Now</label> : <Link className='btn btn-secondary text-white w-full' to='/login'><button className='btn btn-md btn-secondary'>Buy Now</button></Link>}
+                    >Buy Now</label> : <button className='w-full'><Link className='btn btn-secondary text-white w-full' to='/login'>Buy Now</Link></button>}
 
                 </div>
                 {

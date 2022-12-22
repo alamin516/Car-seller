@@ -17,10 +17,10 @@ const Login = () => {
     useTitle('Login')
 
     
-    const from = location.state?.from.pathname || '/'
+    let from = location.state?.from?.pathname || "/";
     
     if(token){
-        navigate(from, {replace: true})
+        navigate(from, { replace: true });
     }
 
     const handleLogin = data => {
@@ -42,7 +42,7 @@ const Login = () => {
         .then((result)=>{
             const user = result.user;
             console.log(user);
-            navigate('/')
+            navigate(from, { replace: true });
         })
         .catch(error => console.error(error))
     }

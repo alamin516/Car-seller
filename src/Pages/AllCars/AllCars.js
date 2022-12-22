@@ -22,9 +22,10 @@ const AllCars = () => {
     })
 
     if (isLoading) {
+        refetch()
         return <Loading></Loading>
     }
-    refetch()
+    
 
     return (
         <div className='container p-6'>
