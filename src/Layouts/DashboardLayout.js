@@ -26,7 +26,7 @@ const DashboardLayout = () => {
                         <li><Link className='btn bg-secondary' to="/dashboard">Dashboard</Link></li>
                         
                         {
-                            isBuyer && <li><Link className='btn bg-secondary' to='/dashboard/myorders'>My Orders</Link></li>
+                            <li><Link className='btn bg-secondary' to='/dashboard/myorders'>My Orders</Link></li>
                         }
                         {
                             isSeller && <>

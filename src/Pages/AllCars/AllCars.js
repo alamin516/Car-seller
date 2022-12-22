@@ -15,7 +15,7 @@ const AllCars = () => {
     const { data: cars = [], isLoading, refetch } = useQuery({
         queryKey: ['cars'],
         queryFn: async () => {
-            const res = await fetch(`https://car-seller-server.vercel.app/products?id=${_id}`);
+            const res = await fetch(`https://car-seller-server.vercel.app/products/id?id=${_id}`);
             const data = await res.json();
             return data
         }
@@ -28,7 +28,7 @@ const AllCars = () => {
 
     return (
         <div className='container p-6'>
-            <h1 className='text-3xl text-center'>All Products</h1>
+            <h1 className='text-3xl text-center'>{category.category}</h1>
             <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 my-20'>
                 {
                     cars.map(car =>
@@ -42,16 +42,6 @@ const AllCars = () => {
                     )
                 }
             </div>
-
-            {
-                product && <OrderModal
-                    key={product._id}
-                    product={product}
-                    setProduct={setProduct}
-                    refetch={refetch}
-                >
-                </OrderModal>
-            }
         </div>
     );
 };

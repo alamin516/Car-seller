@@ -1,17 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 
-const OrderModal = ({ product, setProduct, refetch }) => {
+const OrderModal = ({ singleProduct, setSingleProduct}) => {
     const { user } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { price, resale_price, name , email, img} = product;
+    const { price, resale_price, name , email, img} = singleProduct;
     const navigate = useNavigate();
+    const [locationError, setLocationError] = useState('')
 
-    const { data: locations = [] } = useQuery({
+    const { data: locations = [], refetch } = useQuery({
         queryKey: ['locations'],
         queryFn: async () => {
             const res = await fetch(`https://car-seller-server.vercel.app/locations`);
@@ -22,39 +24,45 @@ const OrderModal = ({ product, setProduct, refetch }) => {
 
 
     const handleOrder = data => {
-        const order = {
-            title: name,
-            product_img: img,
-            price: data.price,
-            buyer: data.name,
-            email: data.email,
-            phone: data.phone,
-            location: data.location,
-            seller_email : email,
-        }
-
-        fetch('https://car-seller-server.vercel.app/orders', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(order)
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.acknowledged) {
-                    setProduct('')
-                    toast.success(`Order Successfully Done`)
-                    refetch()
-                    navigate('/dashboard/myorders')
-
-                }
-                else {
-                    setProduct('')
-                    toast.error(data.message)
-                }
-
+        setLocationError('')
+       
+        if(data.location === 'Select your location'){
+            setLocationError('Location is required')
+        }else{
+            const order = {
+                title: name,
+                product_img: img,
+                price: data.price,
+                buyer: data.name,
+                email: data.email,
+                phone: data.phone,
+                location: data.location,
+                seller_email : email,
+            }
+    
+            fetch('https://car-seller-server.vercel.app/orders', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(order)
             })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.acknowledged) {
+                        setSingleProduct('')
+                        toast.success(`Order Successfully Done`)
+                        refetch()
+                        navigate('/dashboard/myorders')
+    
+                    }
+                    else {
+                        setSingleProduct('')
+                        toast.error(data.message)
+                    }
+    
+                })
+        }
 
 
 
@@ -101,7 +109,7 @@ const OrderModal = ({ product, setProduct, refetch }) => {
                             <select {...register("location", {
                                 required: "alllla"
                             })} className="input input-bordered">
-                                <option selected disabled>Select your location</option>
+                                <option defaultValue='Select your location'>Select your location</option>
                                 {
                                     locations.map(location =>
                                         <option
@@ -112,7 +120,7 @@ const OrderModal = ({ product, setProduct, refetch }) => {
                                 }
 
                             </select>
-                            {errors.location?.type === 'required' && <p className='text-red-600'>{errors.location?.message}</p>}
+                            {locationError && <p className='text-red-600'>{locationError}</p>}
                         </div>
                         <div className="form-control">
                             <label className="label">
@@ -123,7 +131,8 @@ const OrderModal = ({ product, setProduct, refetch }) => {
                             }
                         </div>
                         <div className="form-control mt-6">
-                            <button type="submit" className="btn btn-secondary">Order</button>
+                            <button type="submit"
+                            className="btn btn-secondary">Order</button>
                         </div>
                     </form>
                 </div>

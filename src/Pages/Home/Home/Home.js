@@ -4,6 +4,7 @@ import Banner from '../Banner/Banner';
 import GetInTouch from '../GetInTouch/GetInTouch';
 import HomeAbout from '../HomeAbout/HomeAbout';
 import HomeCategory from '../HomeCategory/HomeCategories';
+import HomeProducts from '../HomeProducts/HomeProducts';
 
 const Home = () => {
     useTitle('Home')
@@ -12,6 +13,7 @@ const Home = () => {
             <Banner></Banner>
             <HomeCategory></HomeCategory>
             <HomeAbout></HomeAbout>
+            <HomeProducts></HomeProducts>
             <GetInTouch></GetInTouch>
         </div>
     );

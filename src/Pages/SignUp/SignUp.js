@@ -13,6 +13,7 @@ const SignUp = () => {
     const [token] = useToken(createUserEmail)
     const navigate = useNavigate()
     const [error, setError] = useState('')
+    const [optionError, setOptionError] = useState('')
     useTitle('Signup')
 
     if (token) {
@@ -21,8 +22,12 @@ const SignUp = () => {
 
     const handleSignUp = data => {
         setError('')
-        console.log(data)
-        createUser(data.email, data.password)
+        setOptionError('')
+
+        if(data.role === 'Select'){
+            setOptionError('Required')
+        }else{
+            createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user)
@@ -40,7 +45,10 @@ const SignUp = () => {
             .catch(error => {
                 console.error(error)
                 setError(error.message)
-            })
+             })
+        }
+
+        
     }
 
     const saveUserDb = (name, email, role, phone) => {
@@ -57,7 +65,7 @@ const SignUp = () => {
             .then(res => res.json())
             .then(data => {
                 setCreateUserEmail(email)
-                toast.success('User created successfully')
+                toast.success(`${role} account created successfully`)
 
             })
     }
@@ -113,12 +121,13 @@ const SignUp = () => {
                             <span className="label-text">Seller/Buyer</span>
                         </label>
                         <select {...register("role", {
-                            required: "Please one option seller/buyer"
+                            required: "Required"
                         })} className="select w-full input-bordered">
-                            <option value="seller">Seller</option>
-                            <option value="buyer">Buyer</option>
+                            <option defaultValue="Select">Select</option>
+                            <option value="Seller">Seller</option>
+                            <option value="Buyer">Buyer</option>
                         </select>
-                        {errors.role && <p className='text-red-600'>{errors.role?.message}</p>}
+                        {optionError && <p className='text-red-600'>{optionError}</p>}
                     </div>
                     <div className="form-control">
                         <label className="label">

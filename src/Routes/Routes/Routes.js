@@ -20,6 +20,7 @@ import MyOrders from "../../Pages/Dashboard/MyOrders/MyOrders";
 import MyBuyers from "../../Pages/Dashboard/MyBuyers/MyBuyers";
 import DisplayError from "../../Pages/Shared/DisplayError/DisplayError";
 import Payment from "../../Pages/Dashboard/Payment/Payment";
+import SingleCar from "../../Pages/AllCars/SingleCar/SingleCar";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +47,12 @@ const router = createBrowserRouter([
             {
                 path: '/category/:id',
                 loader: async({params}) => fetch(`https://car-seller-server.vercel.app/category/${params.id}`),
-                element: <PrivateRoute><AllCars></AllCars></PrivateRoute>
+                element: <AllCars></AllCars>
+            },
+            {
+                path: '/product/:id',
+                loader: async({params}) => fetch(`https://car-seller-server.vercel.app/product/${params.id}`),
+                element: <SingleCar></SingleCar>
             }
         ]
     },
